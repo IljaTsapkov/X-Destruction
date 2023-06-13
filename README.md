@@ -1,5 +1,6 @@
 # X-Destruction
-Developers:
+## Developers:
 Nikita Molokov
 Ilja Tsapkov
 Georgi Jefimov
+
