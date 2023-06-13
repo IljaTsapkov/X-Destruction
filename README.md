@@ -5,3 +5,5 @@ Ilja Tsapkov
 Georgi Jefimov
 ## Game Link:
 https://devilrythecorporation.itch.io/x-destruction
+## Game Footage:
+https://youtu.be/kCIsze7Tabc
