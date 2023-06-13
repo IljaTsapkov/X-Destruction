@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Armor
   m_EditorClassIdentifier: 
   Id: 1
-  uiDisplay: {fileID: 1046776452, guid: ccb98a3f38f639f448d31a020520e66e, type: 3}
+  uiDisplay: {fileID: 848937188, guid: 2824b77ee6321874ea3dfe29cee0ff1f, type: 3}
   type: 0
   description: 1
   healthAmount: 0

@@ -92,6 +92,10 @@ public class DataPersistence : MonoBehaviour
 
     public void DeleteProfileData(string profileID)
     {
+            if (profileID == null)
+            {
+                return;
+            }
         // delete the data for this profile id
         dataHandler.Delete(profileID);
         // initialize the selected profile id
@@ -108,6 +112,8 @@ public class DataPersistence : MonoBehaviour
         {
             this.selectedProfileID = testSelectedProfileID;
             Debug.LogWarning("Overrode selected profile ID with ID: " + testSelectedProfileID);
+            NewGame();
+            SaveGame();
         }
     }
 
@@ -174,11 +180,12 @@ public class DataPersistence : MonoBehaviour
 
         // timestamp the data so we know when it was last saved
         gameData.lastUpdated = System.DateTime.Now.ToBinary();
-
+    
         // save that data to a file using the data handler
         dataHandler.Save(gameData, selectedProfileID);
+        Debug.Log("Finished calling dataHandler.Save");
 
-       inventoryObject.Save(selectedProfileID);
+        inventoryObject.Save(selectedProfileID);
     }
 
     // private void OnApplicationQuit() 

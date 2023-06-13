@@ -6,11 +6,11 @@ using UnityEngine.AI;
 public class AIController : MonoBehaviour
 {
     public NavMeshAgent navMeshAgent;
-    public float waitTime = 4;
+    public float waitTime = 3;
     public float walkSpeed = 3;
     public float runSpeed = 5;
 
-    public float viewRadius = 15;
+    public float viewRadius = 50;
     public float viewAngle = 90;
     public LayerMask playerMask;
     public LayerMask obstacleMask;
@@ -19,15 +19,16 @@ public class AIController : MonoBehaviour
     public float edgeDistance = 0.5f;
     public Transform playerPosition;
     private float attackDistance = 3f;
+    public float hearingDistance = 6f;
 
     public Transform[] waypoints;
-    int currentWaypointIndex;
+    private int currentWaypointIndex;
 
-    Vector3 seenPlayerPosition;
+    private Vector3 seenPlayerPosition;
 
-    float startWaitTime;
-    bool isPlayerInRange;
-    bool isPatroling;
+    private float startWaitTime;
+    private bool isPlayerInRange;
+    private bool isPatroling;
 
     public GameObject rightFist;
     public GameObject leftFist;
@@ -56,6 +57,13 @@ public class AIController : MonoBehaviour
     private void Update()
     {
         AISight(); //  Check whether or not the player is in the enemy's field of vision
+
+        float distanceToPlayer = Vector3.Distance(transform.position, playerPosition.position);
+        if (distanceToPlayer <= hearingDistance)
+        {
+            isPatroling = false;
+            isPlayerInRange = true;
+        }
 
         if (!isPatroling)
         {
@@ -177,6 +185,16 @@ public class AIController : MonoBehaviour
     public void DeactivateLeftFistCollider()
     {
         leftFist.GetComponent<Collider>().enabled = false;
+    }
+
+    public void SetIsPatroling(bool value)
+    {
+        isPatroling = value;
+    }
+
+    public void SetIsPlayerInRange(bool value)
+    {
+        isPlayerInRange = value;
     }
 
     private void AISight()

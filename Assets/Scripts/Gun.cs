@@ -19,27 +19,19 @@ public class Gun : MonoBehaviour {
     [Header("References")]
     [SerializeField] private GunData gunData;
     [SerializeField] private Transform cam;
+    public static Action shootInput;
+    public static Action reloadInput;
+
+    [SerializeField] private KeyCode reloadKey = KeyCode.R;
     
-    public static bool shouldDestroy = true;
-
     float timeSinceLastShot;
-
-    private void Start() {
-        PlayerShoot.shootInput += Shoot;
-        PlayerShoot.reloadInput += StartReload;
-    }
-
-    private void OnDestroy() {
-        PlayerShoot.reloadInput -= StartReload;
-    }
 
     private void OnDisable() {
         gunData.reloading = false;
-
-        }
+    }
 
     public void StartReload() {
-        if (!gunData.reloading && this.gameObject.activeSelf){
+        if (!gunData.reloading && gameObject.activeSelf){
             StartCoroutine(Reload());
             source.PlayOneShot(reloadstart);
                     StartCoroutine(StartReloadAnim());
@@ -58,7 +50,7 @@ public class Gun : MonoBehaviour {
         source.PlayOneShot(reloadend);
     }
 
-    private bool CanShoot() => this.gameObject != null && !gunData.reloading && this.gameObject.activeSelf && timeSinceLastShot > 1f / (gunData.fireRate / 60f);
+    private bool CanShoot() => gameObject != null && !gunData.reloading && gameObject.activeSelf && timeSinceLastShot > 1f / (gunData.fireRate / 60f);
 
     private void Shoot() {
         if (gunData.currentAmmo > 0) {
@@ -96,9 +88,14 @@ public class Gun : MonoBehaviour {
     }
 
     private void Update() {
+        if (Input.GetMouseButton(0)) Shoot();
+        if (Input.GetKeyDown(reloadKey)) StartReload();
         timeSinceLastShot += Time.deltaTime;
 
-        Debug.DrawRay(cam.position, cam.forward * gunData.maxDistance);
+        if (cam != null)
+        {
+            Debug.DrawRay(cam.position, cam.forward * gunData.maxDistance);
+        }
     }
 
     private void OnGunShot() { 

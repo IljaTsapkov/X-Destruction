@@ -8,6 +8,7 @@ public class PauseMenu : MonoBehaviour
 
     public static bool Paused = false; // to check if game is Paused
     public GameObject PauseMenuCanvas;
+    public GameManagerScript gameManager;
 
     void Start()
     {
@@ -19,13 +20,17 @@ public class PauseMenu : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            if(Paused)
+            // Check if the gameOverUI is not active before allowing the pause menu to be opened
+            if(!gameManager.gameOverUI.activeInHierarchy)
             {
-                Play();
-            }
-            else
-            {
-                Stop();
+                if(Paused)
+                {
+                    Play();
+                }
+                else
+                {
+                    Stop();
+                }
             }
         }
     }
@@ -35,6 +40,8 @@ public class PauseMenu : MonoBehaviour
         PauseMenuCanvas.SetActive(true);
         Time.timeScale = 0f;
         Paused = true;
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
     }
 
 
@@ -44,12 +51,18 @@ public class PauseMenu : MonoBehaviour
         PauseMenuCanvas.SetActive(false);
         Time.timeScale = 1f;
         Paused = false;
+        Cursor.visible = false;
     }
 
     public void MainMenuBtn()
     {
-        Gun.shouldDestroy = false;
         PauseMenuCanvas.SetActive(false); // Disable PauseMenu visibility
         SceneManager.LoadSceneAsync(0); // Load MainMenu scene
+    }
+
+    public void QuitGame()
+    {
+        Debug.Log("Game quitted.");
+        Application.Quit();
     }
 }

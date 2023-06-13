@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using UnityEngine.SceneManagement;
 
 public class PlayerMotor : MonoBehaviour, IDataPersistence
@@ -15,10 +16,20 @@ public class PlayerMotor : MonoBehaviour, IDataPersistence
     public Transform orientation;
     [SerializeField] private DataPersistence dataPersistence;
     public float speedIncreaseAmount = 6f;
+    public TextMeshProUGUI gameSavedText;
+    public GameObject footstep;
+    public GameObject footstepDirt;
+    public GameObject jumpsound;
+    // public GameObject landsound;
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        gameSavedText.enabled = false;
+        jumpsound.SetActive(false);
+        footstep.SetActive(false);
+        footstepDirt.SetActive(false);
+        // landsound.SetActive(false);
     }
 
     void Update()
@@ -46,11 +57,54 @@ public class PlayerMotor : MonoBehaviour, IDataPersistence
         controller.Move(transform.TransformDirection(moveDirection) * currentSpeed * Time.deltaTime);
 
         playerVelocity.y += gravity * Time.deltaTime;
+        float Xvelocity = moveDirection.x * Time.deltaTime;
+        float Zvelocity = moveDirection.z * Time.deltaTime;
+        bool PlayerIsMoving = false;
 
-        if (isGrounded && playerVelocity.y < 0)
+        if (Xvelocity != 0 || Zvelocity != 0) {
+            PlayerIsMoving = true;
+        }
+        if (isGrounded && playerVelocity.y < 0) {
             playerVelocity.y = -2f;
-
+        }
         controller.Move(playerVelocity * Time.deltaTime);
+
+        if (playerVelocity.y > 0) {
+            jumpsound.SetActive(true);
+        } else {
+            jumpsound.SetActive(false);
+        }
+
+        if (isGrounded && PlayerIsMoving) {
+            // footstep.SetActive(true);
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, Vector3.down, out hit))
+            {
+                // Play the appropriate walking sound based on the tag of the surface
+                if (hit.collider.gameObject.CompareTag("Dirt"))
+                {
+                    footstepDirt.SetActive(true);
+                    footstep.SetActive(false);
+                }
+                else if (hit.collider.gameObject.CompareTag("Metal"))
+                {
+                    footstepDirt.SetActive(false);
+                    footstep.SetActive(true);
+                }
+            }
+
+        } else {
+            footstep.SetActive(false);    
+            footstepDirt.SetActive(false);
+        }
+
+        // if (isGrounded) {
+        //     landsound.SetActive(true);
+        // } else {
+        //     landsound.SetActive(false);     
+        // }
+        // Debug.Log("IS MOVING? " + PlayerIsMoving);
+        // Debug.Log("IS GROUNDED? " + isGrounded);
     }
 
     public void Jump()
@@ -75,6 +129,10 @@ public class PlayerMotor : MonoBehaviour, IDataPersistence
                 Debug.Log("Saving game using checkpoint.");
                 // Disable the checkpoint
                 other.gameObject.SetActive(false);
+
+                gameSavedText.text = "Game saved";
+                gameSavedText.enabled = true;
+                Invoke("HideSaveText", 2f);
             }
         }
 
@@ -101,5 +159,10 @@ public class PlayerMotor : MonoBehaviour, IDataPersistence
     public void SaveData(ref GameData data)
     {
         data.playerPosition = this.transform.position;
+    }
+
+    private void HideSaveText()
+    {
+        gameSavedText.enabled = false;
     }
 }

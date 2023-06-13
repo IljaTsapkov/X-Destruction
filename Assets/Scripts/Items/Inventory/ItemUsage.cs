@@ -57,7 +57,7 @@ public class ItemUsage : MonoBehaviour
 
     private void UseArmorPotion(InventorySlot slot)
     {
-        int armorValue = 10;
+        int armorValue = 50;
         PlayerHealth.Instance.RestoreArmor(armorValue);
         slot.AddAmount(-1);
         if (slot.amount <= 0)

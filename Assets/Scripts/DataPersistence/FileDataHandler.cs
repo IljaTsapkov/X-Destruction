@@ -56,6 +56,7 @@ public class FileDataHandler
 
     public void Save(GameData data, string profileID)
     {
+        Debug.Log("FileDataHandler.Save called with profileID: " + profileID);
         if(profileID == null)
         {
             return;
@@ -77,6 +78,7 @@ public class FileDataHandler
         {
             Debug.LogError("Error when trying to save data to file: " + fullPath + "\n" + e);
         }
+        Debug.Log("FileDataHandler.Save finished");
     }
 
     public void Delete(string profileID)

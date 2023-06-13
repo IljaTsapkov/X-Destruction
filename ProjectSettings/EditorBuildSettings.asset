@@ -9,8 +9,8 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 4d2333e914f5dbf4ba0d63171afb501f
   - enabled: 1
-    path: Assets/Scenes/NIKITADONTFUCKINGENTERTHISFUCKINGSHIT.unity
-    guid: 47be34a11e06e31469b66ec97aa03dff
+    path: Assets/Scenes/Level.unity
+    guid: 12d9f75b56b48954b931a4816a04a1e0
   - enabled: 1
     path: Assets/Scenes/Credits.unity
     guid: 6d670a61b88785d4e883da96a1074a51

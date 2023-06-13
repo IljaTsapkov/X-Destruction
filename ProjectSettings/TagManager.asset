@@ -8,6 +8,8 @@ TagManager:
   - MutantLeftHand
   - Checkpoint
   - Enemy
+  - Metal
+  - Dirt
   layers:
   - Default
   - TransparentFX
@@ -18,7 +20,7 @@ TagManager:
   - Obstacles
   - Interactable
   - Item
-  - 
+  - Enemy
   - 
   - 
   - 

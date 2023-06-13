@@ -23,7 +23,7 @@ public class GameData
     // the values defined in this constructor will be the default values
     // the game starts with when there's no data to load
     public GameData() {
-        playerPosition = new Vector3(115,1,58);
+        playerPosition = new Vector3(82,-5,176);
         playerHealth = 100f;
     }
 

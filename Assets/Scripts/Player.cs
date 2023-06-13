@@ -8,16 +8,10 @@ public class Player : MonoBehaviour, IDataPersistence
 
     public List<string> collectedUsables = new List<string>();
 
-    public static Player instance { get; private set; }
-
-    private void Awake() {
-        if (instance != null) {
-            Debug.Log("Found more than one Player object in the scene. Destroying the new one.");
-            Destroy(this.gameObject);
-            return;
-        }
-        instance = this;
-        DontDestroyOnLoad(this.gameObject);
+    void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public void OnTriggerEnter(Collider other)

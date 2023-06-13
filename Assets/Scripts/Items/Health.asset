@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Health
   m_EditorClassIdentifier: 
   Id: 0
-  uiDisplay: {fileID: 21300000, guid: d24e7e0b75e1a244bb9687d6fd4315ef, type: 3}
+  uiDisplay: {fileID: 1206904658, guid: c733519f4c8e47642b7ff97831fb722e, type: 3}
   type: 1
   description: 1
   healthAmount: 1

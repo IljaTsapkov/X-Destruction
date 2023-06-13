@@ -52,13 +52,19 @@ public class InventoryObject : ScriptableObject
 
     public void Save(string profileID)
     {
+         Debug.Log("InventoryObject.Save called with profileID: " + profileID);
         string filePath = Path.Combine(Application.persistentDataPath, profileID, savePath);
         string json = JsonUtility.ToJson(Container);
         File.WriteAllText(filePath, json);
+        Debug.Log("InventoryObject.Save finished");
     }
 
     public void Load(string profileID)
     {
+        if (profileID == null)
+        {
+            return;
+        }
         string filePath = Path.Combine(Application.persistentDataPath, profileID, savePath);
         if (File.Exists(filePath))
         {

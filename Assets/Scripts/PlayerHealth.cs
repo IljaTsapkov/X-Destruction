@@ -13,6 +13,12 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
     public Image frontHealthBar;
     public Image backHealthBar;
 
+    public GameManagerScript gameManager;
+    public GameObject PlayerOld;
+    public GameObject Hero;
+    public GameObject Weapons;
+    public GameObject Feet;
+
     public int Armor;
     public int SuperArmor;
 
@@ -34,12 +40,20 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
     {
         health = Mathf.Clamp(health, 0, maxHealth);
         UpdateHealthUI();
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            TakeDamage(Random.Range(10, 30));
-        }
+        // if (Input.GetKeyDown(KeyCode.Z))
+        // {
+        //     TakeDamage(Random.Range(10, 30));
+        // }
 
         invincibilityTimer -= Time.deltaTime;
+
+        if (health <= 0) {
+            gameManager.gameOver();
+            // GameObject.Find("PlayerOld").GetComponent<InputManager>().enabled = false;
+            // Destroy(Hero);
+            // Destroy(Weapons);
+            // Destroy(Feet);
+        }
     }
 
     private void Awake()
@@ -78,25 +92,25 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
 
 
 
-    public void TakeDamage(float damage)
-    {
-        if (Armor > 0)
-        {
-            Armor -= (int)damage;
-            if (Armor <= 0)
-            {
-                Armor = 0;
-                float remainingDamage = Mathf.Abs(Armor);
-                health -= remainingDamage;
-            }
-        }
-        else
-        {
-            health -= damage;
-        }
-        UpdateHealthUI();
-        UpdateArmorUI(); 
-    }
+    // public void TakeDamage(float damage)
+    // {
+    //     if (Armor > 0)
+    //     {
+    //         Armor -= (int)damage;
+    //         if (Armor <= 0)
+    //         {
+    //             Armor = 0;
+    //             float remainingDamage = Mathf.Abs(Armor);
+    //             health -= remainingDamage;
+    //         }
+    //     }
+    //     else
+    //     {
+    //         health -= damage;
+    //     }
+    //     UpdateHealthUI();
+    //     UpdateArmorUI(); 
+    // }
 
     public void RestoreHealth(float healAmount)
     {
@@ -123,7 +137,20 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
         {
             if (invincibilityTimer <= 0f)
             {
-                health -= 15;
+                if (Armor > 0)
+                {
+                    Armor -= 35;
+                    if (Armor < 0)
+                    {
+                        health += Armor;
+                        Armor = 0;
+                    }
+                }
+                else
+                {
+                    health -= 35;
+                }
+
                 invincibilityTimer = invincibilityDuration;
             }
         }
@@ -132,10 +159,26 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
         {
             if (invincibilityTimer <= 0f)
             {
-                health -= 25;
+                if (Armor > 0)
+                {
+                    Armor -= 100;
+                    if (Armor < 0)
+                    {
+                        health += Armor;
+                        Armor = 0;
+                    }
+                }
+                else
+                {
+                    health -= 100;
+                }
+
                 invincibilityTimer = invincibilityDuration;
             }
         }
+
+        UpdateHealthUI();
+        UpdateArmorUI();
     }
 
     public void LoadData(GameData data)
